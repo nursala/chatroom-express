@@ -1,0 +1,29 @@
+<%- include('includes/head.ejs') %>
+
+<body class="bg-body-tertiary">
+<div class="container mt-5">
+    <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="card-body p-4">
+            <h1 class="h4 fw-bold mb-2"><%= message || "Something went wrong" %></h1>
+
+            <% if (typeof status !== "undefined" && status) { %>
+                <div class="text-muted mb-3">Status: <%= status %></div>
+            <% } %>
+
+            <p class="mb-0">
+                Please try again. If the issue continues, go back to the
+                <a href="/" class="link-primary">login page</a>.
+            </p>
+
+            <% if (showDetails && error && error.stack) { %>
+                <hr>
+                <details>
+                    <summary class="text-muted">Show technical details</summary>
+                    <pre class="mt-3"><%= error.stack %></pre>
+                </details>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<%- include('includes/end.ejs') %>

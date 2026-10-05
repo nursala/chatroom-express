@@ -1,0 +1,117 @@
+<%- include('includes/head.ejs') %>
+
+<body class="bg-body-tertiary">
+
+<div class="vh-100 d-flex align-items-center">
+    <div class="container">
+        <div class="row justify-content-center">
+
+            <div class="col-12 col-md-8 col-lg-5 col-xl-4">
+
+                <div class="card border-0 shadow-lg bg-dark text-white rounded-4 overflow-hidden">
+
+                    <!-- Header -->
+                    <div class="card-header border-0 bg-dark d-flex align-items-center justify-content-between py-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="rounded-circle bg-success d-inline-block" style="width:10px;height:10px;"></span>
+                            <div>
+                                <div class="fw-semibold">Login</div>
+                                <div class="text-white-50 small">Enter your credentials to continue</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-4">
+
+                        <% if (loggedUser) { %>
+                            <div class="alert alert-info mb-3">
+                                You are currently logged in as <b><%= loggedUser.email %></b>.
+                                Logging in again will switch the account.
+                                <a href="/chat" class="ms-2">Go to chat</a>
+                            </div>
+                        <% } %>
+
+                        <% if (successMessage) { %>
+                            <div class="alert alert-success mb-3">
+                                <%= successMessage %>
+                            </div>
+                        <% } %>
+
+                        <% if (error) { %>
+                            <div class="alert alert-danger mb-3">
+                                <%= error %>
+                            </div>
+                        <% } %>
+
+                        <form id="loginForm" action="/chat" method="POST">
+                            <input type="hidden" id="tabId" name="tabId" />
+
+                            <div class="mb-3">
+                                <label for="logEmail" class="form-label text-white-50">Email</label>
+                                <input
+                                        id="logEmail"
+                                        name="email"
+                                        type="email"
+                                        class="form-control bg-dark text-white border-secondary rounded-3"
+                                        placeholder="name@example.com"
+                                        required
+                                        autocomplete="email"
+                                />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="logPassword" class="form-label text-white-50">Password</label>
+                                <input
+                                        id="logPassword"
+                                        name="password"
+                                        type="password"
+                                        class="form-control bg-dark text-white border-secondary rounded-3"
+                                        placeholder="••••••••"
+                                        required
+                                        minlength="3"
+                                        maxlength="32"
+                                        autocomplete="current-password"
+                                />
+                            </div>
+
+                            <button type="submit" class="btn btn-success w-100 rounded-pill py-2 fw-semibold shadow-sm">
+                                Login
+                            </button>
+                        </form>
+
+                        <div class="text-center mt-3">
+                            <a href="/users/register" class="link-light text-decoration-none">
+                                Don’t have an account? <span class="text-success fw-semibold">Register</span>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="text-center mt-3 text-muted small">
+                    Secure session • Tab-based login
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        let tabId = sessionStorage.getItem("tabId");
+
+        if (!tabId) {
+            tabId =
+                (crypto && crypto.randomUUID && crypto.randomUUID()) ||
+                ("tab_" + Date.now() + "_" + Math.random().toString(16).slice(2));
+
+            sessionStorage.setItem("tabId", tabId);
+        }
+
+        const input = document.getElementById("tabId");
+        if (input) input.value = tabId;
+    })();
+</script>
+
+<%- include('includes/end.ejs') %>

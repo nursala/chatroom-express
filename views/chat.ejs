@@ -1,0 +1,141 @@
+<!--views/chat.ejs-->
+<%- include('includes/head.ejs') %>
+
+<div class="vh-100 d-flex flex-column overflow-hidden bg-dark">
+
+    <div class="container-fluid flex-grow-1 overflow-hidden h-100">
+        <div class="row justify-content-center h-100 overflow-hidden">
+
+            <div class="col-1 d-none d-lg-block"></div>
+
+            <div class="col-12 col-lg-10 col-xl-8 d-flex flex-column h-100 overflow-hidden">
+
+                <!-- Chat area -->
+                <div class="flex-grow-1 overflow-hidden d-flex flex-column">
+
+                    <!-- Top Bar -->
+                    <div class="d-flex justify-content-between align-items-center mb-3 px-1 flex-shrink-0 text-white">
+                        <div>
+                            <div class="text-white-50">Welcome back</div>
+                            <h3 class="mb-0 fw-bold">Welcome, <%= firstName %></h3>
+                        </div>
+
+                        <a href="/logout" class="btn btn-outline-light btn-sm px-3 rounded-pill">
+                            Logout
+                        </a>
+                    </div>
+
+                    <input type="hidden" id="currentUser" value="<%= email %>">
+                    <input type="hidden" id="serverTabId" value="<%= tabId %>">
+
+                    <!-- Chat Card -->
+                    <div class="card border-0 shadow-lg overflow-hidden d-flex flex-column flex-grow-1 rounded-4 bg-dark">
+
+                        <!-- Header -->
+                        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center border-0 flex-shrink-0">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="rounded-circle bg-success d-inline-block"
+                                      style="width:10px;height:10px;"></span>
+                                <div>
+                                    <div class="fw-semibold">Chat Room</div>
+                                    <div class="text-white-50 small">Group chat</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Messages + Background -->
+                        <div
+                                class="card-body p-0 flex-grow-1 overflow-hidden position-relative d-flex flex-column"
+                                style="background-image: url('images/chat_background.jpg'); background-size: cover; background-position: center;"
+                        >
+                            <!-- Overlay (behind content) -->
+                            <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"
+                                 style="z-index: 0;"></div>
+
+                            <!-- Search (above overlay) -->
+                            <div class="p-3 pb-2 flex-shrink-0 position-relative" style="z-index: 2;">
+                                <input
+                                        type="text"
+                                        id="searchInput"
+                                        class="form-control"
+                                        placeholder="Search messages..."
+                                        autocomplete="off"
+                                />
+                            </div>
+
+                            <!-- Messages (scroll only here) -->
+                            <div id="messagesList" class="flex-grow-1 overflow-auto px-3 pb-3 position-relative"
+                                 style="z-index: 2;">
+                                <div class="text-center text-white mt-5" id="loadingState">Loading messages...</div>
+                            </div>
+                        </div>
+
+                        <!-- Input -->
+                        <div class="card-footer bg-dark border-0 flex-shrink-0 p-3">
+                            <form id="chatForm" method="POST" action="/chat/message"
+                                  class="d-flex gap-2 align-items-end">
+
+                                <div class="flex-grow-1">
+<textarea
+        id="msgInput"
+        name="text"
+        class="form-control rounded-pill bg-dark text-white border-secondary"
+        placeholder="Type a message..."
+        rows="1"
+></textarea>
+
+                                </div>
+
+                                <button
+                                        type="submit"
+                                        id="sendBtn"
+                                        class="btn btn-success rounded-circle d-flex align-items-center justify-content-center shadow-sm"
+                                        disabled
+                                >
+                                    ➤
+                                </button>
+
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-1 d-none d-lg-block"></div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modern Modal -->
+<div class="modal fade" id="appModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden bg-dark text-white">
+
+            <!-- Header -->
+            <div class="modal-header border-0 bg-body-tertiary bg-opacity-10">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="rounded-circle bg-success d-inline-block" style="width:10px;height:10px;"></span>
+                    <h5 class="modal-title fw-semibold mb-0 text-white" id="appModalTitle">Message</h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body text-white" id="appModalBody">...</div>
+
+            <!-- Footer -->
+            <div class="modal-footer border-0 bg-body-tertiary bg-opacity-10" id="appModalFooter">
+                <button type="button" class="btn btn-outline-light rounded-pill px-4" data-bs-dismiss="modal">
+                    Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="/javascripts/chat.js"></script>
+<%- include('includes/end.ejs') %>

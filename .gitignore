@@ -1,0 +1,8 @@
+/node_modules/
+.env
+.env.*
+!.env.example
+.idea/
+node_modules/
+target/
+*.ser
